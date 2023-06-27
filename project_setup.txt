@@ -1,0 +1,10 @@
+# WINDOWS
+In CMD as Administrator, when in project top directory run following commands:
+
+1. py -m venv .venv
+2. .venv\Scripts\activate.bat
+3. pip install -r requirements.txt
+
+For starting application:
+
+1. flask run --debug
