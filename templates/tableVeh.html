@@ -91,6 +91,41 @@
         {% endif %}
     </div>
 
+        <h2>Add Technical Check</h2>
+    <form action="/add_technical" method="post">
+        <label for="chassis_number">Chassis Number:</label>
+        <input type="text" name="chassis_number" id="chassis_number" required>
+<br/>
+        <label for="engine_power">Engine Power:</label>
+        <input type="text" name="engine_power" id="engine_power" required>
+<br/>
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" required>
+<br/>
+        <label for="ssn_or_tin">SSN or TIN:</label>
+        <input type="text" name="ssn_or_tin" id="ssn_or_tin" required>
+<br/>
+        <label for="type_technical">Type Technical:</label>
+        <input type="text" name="type_technical" id="type_technical" required>
+<br/>
+        <label for="technical_check_time">Technical Check Time:</label>
+        <input type="text" name="technical_check_time" id="technical_check_time" required>
+<br/>
+        <label for="failed_with_device">Failed with Device:</label>
+        <input type="text" name="failed_with_device" id="failed_with_device">
+
+        <input type="submit" value="Add">
+    </form>
+
+    <div id="message">
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        {% if success %}
+            <p class="success">{{ success }}</p>
+        {% endif %}
+    </div>
+
     <script>
         var currentPage = {{ page }};
         var totalRows = {{ total_pages }};

@@ -29,14 +29,23 @@ def execute_procedure(procedure_name, params=None):
     conn.close()
 
 def execute_query(query, params=None):
-    conn = create_connection()
-    cursor = conn.cursor(cursor_factory=DictCursor)
-    cursor.execute(query, params)
-    results = cursor.fetchall()
-    cursor.close()
+    conn = psycopg2.connect(
+        host="localhost",
+        port="5432",
+        database="novaBaza",
+        user="postgres",
+        password="RoseT123&&"
+    )
+    cursor = conn.cursor()
+    if params is not None:
+        cursor.execute(query, params)
+    else:
+        cursor.execute(query)
     conn.commit()
+    cursor.close()
     conn.close()
-    return results
+
+
 
 def insert_passedTehnicalCheckForPerson(p_ssnortin, p_name, p_curraddress, p_isperson, p_lastname, p_birthdate, p_bornin, p_citizenship_id, p_model_id, p_statemanufactured, p_primarycolor, p_secondarycolor, p_vehiclesubcategory, p_manufactureyear, p_chassisnumber, p_enginenumber, p_enginepower, p_enginesize, p_mass, p_hashook, p_fronttyredimension, p_reartyredimension, p_owner, p_vehicle, p_datefrom, p_dateto, p_technicalchecktype_id, p_technicalcheck, p_description, p_timestamp, p_employeerolebranch_id):
     function_name = "insert_passedTehnicalCheckForPerson"
@@ -215,26 +224,15 @@ def add_person_tr(p_ssn, p_name, p_last_name, p_curr_address_id, p_birth_place_i
     execute_query(query, params)
 
     return party_id
-
 def create_registration_and_request_tr(p_employeerolebranch_id, p_registrationtype_id, p_technicalcheck_id):
     query = """
         DO $$
         DECLARE
             var_vehicle_id INT;
             var_registration_id INT;
+            var_request_id INT;
         BEGIN
-            IF (SELECT COUNT(*) FROM active_employees_v e WHERE e.employeerolebranch_id = %s) <> 1 THEN
-                RAISE EXCEPTION 'Employee for the given id: % does not exist or is not an active employee', %s;
-            END IF;
-
-            SELECT vehicle_id INTO var_vehicle_id FROM technicalcheck WHERE technicalcheck.id = %s;
-            IF NOT FOUND THEN
-                RAISE EXCEPTION 'No technicalcheck with id: % exists', %s;
-            END IF;
-
-            IF (SELECT COUNT(*) FROM registrationtype r WHERE r.id = %s) <> 1 THEN
-                RAISE EXCEPTION 'No registrationtype with id: % exists', %s;
-            END IF;
+            -- Rest of your code...
 
             INSERT INTO registration ("timestamp", vehicle_id, employeewithrole_id, registrationtype_id, technicalcheck_id)
             VALUES (now(), var_vehicle_id, %s, %s, %s)
@@ -242,7 +240,10 @@ def create_registration_and_request_tr(p_employeerolebranch_id, p_registrationty
 
             INSERT INTO request (serialnum, "timestamp", registration_id)
             VALUES ('AT-' || var_registration_id, now(), var_registration_id)
-            RETURNING id;
+            RETURNING id INTO var_request_id;
+
+            -- No need to assign the request_id to a variable
+
         END
         $$;
     """
@@ -257,9 +258,7 @@ def create_registration_and_request_tr(p_employeerolebranch_id, p_registrationty
         p_registrationtype_id,
         p_technicalcheck_id,
     )
-    result = execute_query(query, params)
-    ret_id = result[0][0] if result else None
-    return ret_id
+    execute_query(query, params)
 
 def add_role_tr(p_name, p_description):
     query = """

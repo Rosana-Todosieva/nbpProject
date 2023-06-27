@@ -1,0 +1,22 @@
+<!-- registration_form.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Registration</title>
+</head>
+<body>
+    <h2>Add Registration</h2>
+    <form action="{{ url_for('add_registration') }}" method="POST">
+        <label for="employeerolebranch_id">Employeerolebranch ID:</label>
+        <input type="text" name="employeerolebranch_id" required><br>
+
+        <label for="registrationtype_id">Registration Type ID:</label>
+        <input type="text" name="registrationtype_id" required><br>
+
+        <label for="technicalcheck_id">Technical Check ID:</label>
+        <input type="text" name="technicalcheck_id" required><br>
+
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
