@@ -3,7 +3,23 @@ import psycopg2
 import json
 import math
 
+
 app = Flask(__name__)
+
+from db import close_db
+app.teardown_appcontext(close_db)
+
+
+from db import get_conn
+@app.route('/proba')
+def proba():
+    cursor = get_conn().cursor()
+    data = ""
+    cursor.execute("SELECT * FROM add_registrationtype_tr('test_from_app');")
+    data = cursor.fetchone()
+
+    cursor.close()
+    return jsonify(data)
 
 
 @app.route('/')
