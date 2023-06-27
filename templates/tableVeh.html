@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .pagination a:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Fuel type</th>
+                <th>Category</th>
+                <th>Subcategory</th>
+                <th>Number of wheels</th>
+                <th>Number of axes</th>
+                <th>Engine number</th>
+                <th>Engine size</th>
+                <th>Engine power</th>
+                <th>Year manifactured</th>
+                <th>Chassis number</th>
+                <th>Mass</th>
+                <th>Front tyre dimensions</th>
+                <th>Rear tyre dimensions</th>
+                <!-- Add more table headers as needed -->
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            {% for row in data %}
+            <tr>
+                <td>{{ row[0] }}</td>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+                <td>{{ row[3] }}</td>
+                <td>{{ row[4] }}</td>
+                <td>{{ row[5] }}</td>
+                <td>{{ row[6] }}</td>
+                <td>{{ row[7] }}</td>
+                <td>{{ row[8] }}</td>
+                <td>{{ row[9] }}</td>
+                <td>{{ row[10] }}</td>
+                <td>{{ row[11] }}</td>
+                <td>{{ row[12] }}</td>
+                <td>{{ row[13] }}</td>
+                <td>{{ row[14] }}</td>
+                <!-- Add more table cells as needed -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="/vehicle?page={{ page - 1 }}&per_page={{ per_page }}">Previous</a>
+        {% endif %}
+        {% if page < total_pages %}
+            <a href="/vehicle?page={{ page + 1 }}&per_page={{ per_page }}">Next</a>
+        {% endif %}
+    </div>
+
+    <script>
+        var currentPage = {{ page }};
+        var totalRows = {{ total_pages }};
+    </script>
+</body>
+</html>
